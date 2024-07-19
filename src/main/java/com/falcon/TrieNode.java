@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class TrieNode {
     public boolean isEnd = false;
-    public Map<Character, TrieNode> children = new HashMap();
+    public Map<Character, TrieNode> children = new HashMap<>();
 
     public TrieNode() {
     }

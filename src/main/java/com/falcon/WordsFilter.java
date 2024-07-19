@@ -4,9 +4,20 @@ package com.falcon;
  * @author anhnt
  */
 public class WordsFilter {
-    private final TrieNode root;
+    private TrieNode root;
+    private static final WordsFilter WORDS_FILTER = getInstance();
 
-    public WordsFilter(OffensiveDictionaryLoader offensiveDictionaryLoader) {
+    private WordsFilter() {
+    }
+
+    public static WordsFilter getInstance(){
+        if (WORDS_FILTER == null) {
+            return new WordsFilter();
+        }
+        return WORDS_FILTER;
+    }
+
+    public void setDictionary(OffensiveDictionaryLoader offensiveDictionaryLoader) {
         this.root = offensiveDictionaryLoader.getDictionary();
     }
 
@@ -36,8 +47,8 @@ public class WordsFilter {
                 }
             }
             if (k != i) {
-                //result.append(replacement.repeat(k - i + 1));
-                result.append(replacement);
+                result.append(replacement.repeat(k - i + 1));
+                //result.append(replacement);
                 i = k;
             } else {
                 result.append(text.charAt(i));
@@ -46,51 +57,12 @@ public class WordsFilter {
         return result.toString();
     }
 
-//    private static final WordsFilter WORDS_FILTER = getInstance();
-//
-//    public static WordsFilter getInstance() {
-//        if (WORDS_FILTER == null) {
-//            return new WordsFilter();
-//        }
-//        return WORDS_FILTER;
-//    }
-//
-//    private WordsFilter() {
-//
-//    }
-
-//    public void loadOffensiveDictionary(String filePath) {
-//        try {
-//            BufferedReader reader = new BufferedReader(new FileReader(filePath));
-//
-//            String line;
-//            while((line = reader.readLine()) != null) {
-//                if (!line.trim().startsWith("#")) {
-//                    WORDS_FILTER.insert(line);
-//                }
-//            }
-//            reader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void insert(String word) {
-//        TrieNode node = root;
-//        for (int i = 0; i < word.length(); i++) {
-//            char ch = word.charAt(i);
-//            if (!node.children.containsKey(ch)) {
-//                node.children.put(ch, new TrieNode());
-//            }
-//            node = node.children.get(ch);
-//        }
-//        node.isEnd = true;
-//    }
-//
 //    public static void main(String[] args) {
-//        WordsFilter wordsFilter = new WordsFilter(new OffensiveDictionaryLoader("vn_offensive_words.txt"));
+//        WordsFilter wordsFilter = WordsFilter.getInstance();
+//        OffensiveDictionaryLoader.setOffensiveDictionaryLoader("vn_offensive_words.txt");
+//        wordsFilter.setDictionary(OffensiveDictionaryLoader.getInstance());
 //
-//        String message = "  con ca vAn g la Co n ca co n";
+//        String message = " cac";
 //        System.out.println(message);
 //        System.out.println(wordsFilter.replaceSensitiveWords(message, "*"));
 //    }
